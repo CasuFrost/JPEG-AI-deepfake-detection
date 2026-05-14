@@ -1,3 +1,6 @@
-CNNDetection/weights/
-crn/
-stylegan2/
+*:Zone.Identifier
+lib/.tmp
+lib/CNNDetection/weights/
+lib/CNNDetection/dataset/test/crn/
+lib/CNNDetection/dataset/test/stylegan2/
+lib/CNNDetection/dataset/test/imle/

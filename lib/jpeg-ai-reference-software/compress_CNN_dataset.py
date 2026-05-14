@@ -82,11 +82,18 @@ for bpp in bpp_range:
                 start = time.time()
                 
                 out=subprocess.run(f"{force_gpu} python3 -m src.reco.coders.encoder {os.path.join(root, file)} ../.tmp --set_target_bpp {bpp} --cfg cfg/tools_off.json cfg/profiles/{profile}.json",text=False,shell=True,capture_output=True) #encode
+                
+                if out.returncode:
+                    print(f"\033[91mERROR\033[0m:   failed the encoding of {os.path.join(root, file)[2:]}")
+                    exit()
+                
                 if verbose:
                     print("Decoding image",string_cnt)
 
                 out=subprocess.run(f"{force_gpu} python3 -m src.reco.coders.decoder ../.tmp {file_output_path}",text=False,shell=True,capture_output=True) #decode
-          
+                if out.returncode:
+                    print(f"\033[91mERROR\033[0m:   failed the decoding of {os.path.join(root, file)[2:]}")
+                    exit()
                 end=time.time()-start
                 total_time+=end
                 avg_time_per_img=total_time/virgin_counter
