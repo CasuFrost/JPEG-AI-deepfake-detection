@@ -15,7 +15,7 @@ bpp_range = [12,50,100]
 profile="simple"
 verbose=1
 force_gpu = 0
-dataset_portion = 0.1 #portion of dataset to use
+dataset_portion = 0.05 # portion of dataset to use
 
 
 skip_coefficient = int(1/dataset_portion)
@@ -31,6 +31,7 @@ time_info=1
 
 for root, dirs, files in os.walk(dataset_path):
     for file in files:
+        if len(os.path.join(root).split("/")) < 5: continue # skip unstructured files/folders (non data elements)
         if os.path.join(root).split("/")[4]=="compressed_images":
             continue
         if iter%skip_coefficient==0:
@@ -46,10 +47,12 @@ img_counter=0 #counter for the images compressed in total
 
 with open(csv_compressed_images, "a") as f:
     for bpp in bpp_range:
+        iter = 0  # reset per ogni bpp
         for root, dirs, files in os.walk(dataset_path):
             dirs.sort()
             files.sort()
             for file in files:
+                if len(os.path.join(root).split("/")) < 5: continue # skip unstructured files/folders (non data elements)
                 dataset_name=root.split("/")[4]
                 
                 if dataset_name=="compressed_images":
@@ -86,7 +89,7 @@ with open(csv_compressed_images, "a") as f:
                         print("Encoding image",string_cnt," ["+str(round(img_counter/total_img_number*100,2))+"%]")
                     start = time.time()
                     
-                    out=subprocess.run(f"{force_gpu} python3 -m src.reco.coders.encoder {os.path.join(root, file)} ../.tmp --set_target_bpp {bpp} --cfg cfg/tools_off.json cfg/profiles/{profile}.json",text=False,shell=True,capture_output=True) #encode
+                    out=subprocess.run(f"{force_gpu} python3 -m src.reco.coders.encoder \"{os.path.join(root, file)}\" ../.tmp --set_target_bpp {bpp} --cfg cfg/tools_off.json cfg/profiles/{profile}.json",text=False,shell=True,capture_output=True) #encode
                     
                     if out.returncode:
                         print(f"\033[91mERROR\033[0m:   failed the encoding of {os.path.join(root, file)[2:]}")
