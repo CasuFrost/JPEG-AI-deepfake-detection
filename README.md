@@ -16,4 +16,6 @@ An immediate example is the following, in which the average of the azimuthal ave
 these profiles were calculated on the real images of the _Gaugan_ dataset, compressing the images at 12, 50 and 100 BPP.
 Note how compressed images tend to have an increasingly lower average energy than uncompressed images, and the average energy of compressed images is higher if the BPP is higher. All compressed images have the same anomaly: A high frequency energy peak, which uncompressed images do not have (around 180 Hz).
 
+More details [here](https://github.com/CasuFrost/JPEG-AI-deepfake-detection/tree/main/results/frequency_analysis.md).
+
 ## Mitigation strategies
