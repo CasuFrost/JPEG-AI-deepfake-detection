@@ -75,5 +75,3 @@ In this section we group the results for all the datasets combined.
 <img src="plots/global_results/power_spectrum/CR100.png" width="49%">
 <img src="plots/global_results/power_spectrum/CF100.png" width="49%">
 </div>
-
-# DCT Coefficients
