@@ -57,4 +57,19 @@ More details [here](https://github.com/CasuFrost/JPEG-AI-deepfake-detection/tree
 
 ## 🛡️ Mitigation strategies
 
-#TODO
+To counter the performance degradation caused by JPEG AI compression, we tried three different mitigation strategies.
+
+
+1) **Boosting**: This technique isolates the luminance channel (Y) of images in the YCrCb color space and partitions it into 8x8 blocks. By applying the Discrete Cosine Transform (DCT), the algorithm maps the blocks to the frequency domain and selectively amplifies high-frequency AC coefficients (where $u + v > \text{freq\_threshold}$) by a specific gain factor. An Inverse DCT (IDCT) then reconstructs the enhanced luminance. This targeted amplification restores and accentuates the subtle, high-frequency artifacts and engine-specific noise patterns that compression typically obliterates, effectively helping the detectors maintain high accuracy even on heavily compressed images.
+
+2) **Frequency Masking**: We applied a circular mask in the frequency domain (low-pass filter) on the compressed images to test. If the high frequencies contain only compression noise that confuses the detector, they can be eliminated, thereby removing the variance introduced by JPEG AI. The model will be forced to rely exclusively on mid-frequencies (such as the $u=3, v=3$ block), where analysis has shown that a statistical gap between Real and Fake persists even under compression.
+
+3) **Detector Fine-Tuning**: standard detectors fail to reliably classify highly compressed images due to high-frequency neural artifacts,  we fine-tuned the given detectors using datasets specifically compressed with the JPEG AI standard. By exposing the detectors to these unique neural compression fingerprints during the training process, the models learn to adapt to the modified frequency profiles. This approach effectively mitigates the accuracy drop and improves detection reliability even at lower Bit-Per-Pixel (BPP) rates.
+
+
+
+
+
+
+
+
